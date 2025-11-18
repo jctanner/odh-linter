@@ -29,6 +29,7 @@ The analyzer name is `clusterconfig`, which maps to rule ID **ODH-ARCH-001**.
 | `dupedef` | ODH-ARCH-003 | Architecture | LOW |
 | `testlocation` | ODH-ARCH-004 | Architecture | LOW |
 | `boolforenum` | ODH-ARCH-005 | Architecture | MEDIUM |
+| `errordemote` | ODH-ARCH-006 | Architecture | MEDIUM |
 
 ---
 
@@ -48,6 +49,7 @@ The analyzer name is `clusterconfig`, which maps to rule ID **ODH-ARCH-001**.
 | ODH-ARCH-003 | `dupedef` | Duplicate type definition |
 | ODH-ARCH-004 | `testlocation` | Test in wrong package |
 | ODH-ARCH-005 | `boolforenum` | Bool return for enum |
+| ODH-ARCH-006 | `errordemote` | Error logged instead of returned |
 
 ---
 
@@ -65,6 +67,7 @@ The analyzer name is `clusterconfig`, which maps to rule ID **ODH-ARCH-001**.
 - **ODH-WEBHOOK-001** (`admissionwebhook`) - Logic error risk
 - **ODH-ARCH-001** (`clusterconfig`) - Design pattern violation
 - **ODH-ARCH-005** (`boolforenum`) - API design issue
+- **ODH-ARCH-006** (`errordemote`) - Error handling policy violation
 
 ### 🟢 LOW Severity (Nice to Fix)
 
