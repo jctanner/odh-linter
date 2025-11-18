@@ -103,7 +103,7 @@ Extracted from refactoring PRs:
 | ODH-ARCH-001 | `clusterconfig` | Direct cluster config access | MEDIUM |
 | ODH-ARCH-002 | `depdirection` | Wrong dependency direction | HIGH ⚠️ |
 | ODH-ARCH-003 | `dupedef` | Duplicate type definitions | LOW |
-| ODH-ARCH-004 | `testlocation` | Tests in wrong package | LOW |
+| ODH-ARCH-004 | `testlocation` | Tests in wrong package (unit tests only) | LOW |
 | ODH-ARCH-005 | `boolforenum` | Boolean return for enum | MEDIUM |
 
 ### 📦 OLM Bundle Checks (8 rules)
@@ -151,9 +151,66 @@ go vet -vettool=odhlint \
 ### Disable Specific Linters
 
 ```bash
-# Disable testlocation (has false positives)
-go vet -vettool=odhlint -testlocation=false ./...
+# Disable specific linters if needed
+go vet -vettool=odhlint -doublewrap=false -fmtsprintf=false ./...
 ```
+
+## Important Notes
+
+### testlocation Linter (ODH-ARCH-004)
+
+**Now Fixed**: The `testlocation` linter previously generated many false positives. It has been updated to:
+
+✅ **Skip integration/e2e tests** - These are SUPPOSED to import many packages  
+✅ **Ignore utility packages** - Kubernetes APIs, test utilities, and common helpers are OK to import  
+✅ **Focus on unit tests** - Only flags unit tests testing business logic from other packages
+
+**What it checks**: Unit tests should be in the same package as the code they test.
+
+**What it ignores**:
+- E2E/integration tests (`tests/e2e/`, `tests/integration/`)
+- Kubernetes utility imports (`k8s.io/apimachinery/pkg/api/errors`, etc.)
+- Test utility imports (`pkg/utils/test/`, `pkg/testutil/`)
+- Common utilities (`pkg/utils/`, `pkg/common/`)
+
+See [`TESTLOCATION_FIX.md`](TESTLOCATION_FIX.md) for detailed fix documentation.
+
+### clusterconfig Linter (ODH-ARCH-001)
+
+**Now Fixed**: The `clusterconfig` linter previously flagged test files. It has been updated to:
+
+✅ **Skip all test files** (`*_test.go`) - Tests need to create fixtures directly  
+✅ **Focus on production code** - Only flags production code using cluster config types  
+✅ **Allow test setup** - Unit and E2E tests can use `configv1.Authentication`, `configv1.ClusterVersion`, etc.
+
+**What it checks**: Production code should use `pkg/cluster/` abstractions instead of direct OpenShift API types.
+
+**What it ignores**:
+- All test files (`*_test.go`) - unit tests and E2E tests
+- E2E/integration test directories
+- Code in `pkg/cluster/` itself
+
+See [`CLUSTERCONFIG_FIX.md`](CLUSTERCONFIG_FIX.md) and [`E2E_TEST_LINTING.md`](E2E_TEST_LINTING.md) for detailed documentation.
+
+### typeassert Linter (ODH-TYPE-001)
+
+**Now Supports `//nolint` Comments**: The `typeassert` linter respects developer decisions:
+
+✅ **Recognizes `//nolint:typeassert`** - Suppress warnings for assertions you've verified are safe  
+✅ **Also recognizes `//nolint:forcetypeassert`** - Common golangci-lint directive  
+✅ **Trusts informed decisions** - When developers know the type is guaranteed
+
+**When to use `//nolint`**:
+- Kubernetes API guarantees (e.g., container names are always strings)
+- After exhaustive validation elsewhere
+- In generated code where types are guaranteed
+
+**When NOT to use**:
+- User input or external data
+- When you can easily add `, ok` check
+- "It works in my tests" (production data may differ)
+
+See [`NOLINT_SUPPORT.md`](NOLINT_SUPPORT.md) for detailed guidelines and examples.
 
 ## Example Output
 
