@@ -1,0 +1,54 @@
+# github.com/opendatahub-io/opendatahub-operator/v2/api/dscinitialization/v1
+api/dscinitialization/v1/dscinitialization_conversion.go:26:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(*dsciv2.DSCInitialization)
+api/dscinitialization/v1/dscinitialization_conversion.go:59:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(*dsciv2.DSCInitialization)
+# github.com/opendatahub-io/opendatahub-operator/v2/api/datasciencecluster/v1
+# [github.com/opendatahub-io/opendatahub-operator/v2/api/datasciencecluster/v1]
+api/datasciencecluster/v1/datasciencecluster_conversion.go:97:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(*dscv2.DataScienceCluster)
+api/datasciencecluster/v1/datasciencecluster_conversion.go:154:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(*dscv2.DataScienceCluster)
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/utils/test/mocks
+pkg/utils/test/mocks/types.go:37:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(operatorv1.ManagementState)
+pkg/utils/test/mocks/types.go:41:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(common.PlatformObject)
+pkg/utils/test/mocks/types.go:61:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(client.Client)
+pkg/utils/test/mocks/types.go:65:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(discovery.DiscoveryInterface)
+pkg/utils/test/mocks/types.go:69:9: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(dynamic.Interface)
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/status/deployments
+pkg/controller/actions/status/deployments/action_deployments_available.go:11:2: dependency violation: pkg package (.../status/deployments) should not import internal package (.../controller/status): pkg/ packages should not depend on internal/ packages
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/utils/test/fakeclient
+pkg/utils/test/fakeclient/fakeclient.go:52:16: redundant error wrapping: &{scheme New} already wraps errors with context
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/utils/test/envt
+pkg/utils/test/envt/envt.go:312:25: WARNING: InsecureSkipVerify set to true in production code - disables certificate validation
+# github.com/opendatahub-io/opendatahub-operator/v2/internal/controller/services/gateway
+# [github.com/opendatahub-io/opendatahub-operator/v2/internal/controller/services/gateway]
+internal/controller/services/gateway/gateway_support.go:35:6: type AuthMode with 3 constants defined in github.com/opendatahub-io/opendatahub-operator/v2/internal/controller/services/gateway; consider moving shared types to pkg/ package
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/cluster
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/cluster]
+pkg/cluster/cluster_config.go:310:2: error demoted to log statement instead of being returned; add //nolint:errordemote with justification or return the error
+# github.com/opendatahub-io/opendatahub-operator/v2/cmd
+# [github.com/opendatahub-io/opendatahub-operator/v2/cmd]
+cmd/main.go:290:5: direct instantiation of cluster config type configv1.Authentication outside pkg/cluster/; use cluster package abstractions instead
+cmd/main.go:290:5: direct access to cluster config type configv1.Authentication outside pkg/cluster/; use cluster package abstractions instead
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/deploy
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/deploy]
+pkg/controller/actions/deploy/action_deploy_merge_deployment.go:78:23: type assertion without ok check can panic at runtime; use comma-ok idiom: x, ok := y.(string)
+pkg/controller/actions/deploy/action_deploy.go:25:6: type Mode with 2 constants defined in github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/deploy; consider moving shared types to pkg/ package
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/cluster_test
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/cluster_test]
+pkg/cluster/secret_test.go:8:2: test file imports github.com/opendatahub-io/opendatahub-operator/v2/pkg/cluster but is not in that package; consider moving tests to pkg/cluster
+# github.com/opendatahub-io/opendatahub-operator/v2/internal/webhook/hardwareprofile_test
+# [github.com/opendatahub-io/opendatahub-operator/v2/internal/webhook/hardwareprofile_test]
+internal/webhook/hardwareprofile/integration_test.go:28:6: type WorkloadType with 3 constants defined in github.com/opendatahub-io/opendatahub-operator/v2/internal/webhook/hardwareprofile_test; consider moving shared types to pkg/ package
+internal/webhook/hardwareprofile/register_test.go:8:2: test file imports github.com/opendatahub-io/opendatahub-operator/v2/internal/webhook/hardwareprofile but is not in that package; consider moving tests to internal/webhook/hardwareprofile
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/manifests/kustomize_test
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/manifests/kustomize_test]
+pkg/manifests/kustomize/kustomize_test.go:10:2: test file imports github.com/opendatahub-io/opendatahub-operator/v2/pkg/manifests/kustomize but is not in that package; consider moving tests to pkg/manifests/kustomize
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/status/deployments_test
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/actions/status/deployments_test]
+pkg/controller/actions/status/deployments/action_deployments_available_test.go:15:2: dependency violation: pkg package (.../status/deployments_test) should not import internal package (.../controller/status): pkg/ packages should not depend on internal/ packages
+# github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/reconciler
+# [github.com/opendatahub-io/opendatahub-operator/v2/pkg/controller/reconciler]
+pkg/controller/reconciler/reconciler.go:25:2: dependency violation: pkg package (.../controller/reconciler) should not import internal package (.../controller/status): pkg/ packages should not depend on internal/ packages
+pkg/controller/reconciler/reconciler_support.go:20:2: dependency violation: pkg package (.../controller/reconciler) should not import internal package (.../controller/status): pkg/ packages should not depend on internal/ packages
+pkg/controller/reconciler/reconciler_test.go:30:2: dependency violation: pkg package (.../controller/reconciler) should not import internal package (.../controller/status): pkg/ packages should not depend on internal/ packages
+# github.com/opendatahub-io/opendatahub-operator/v2/tests/e2e_test
+# [github.com/opendatahub-io/opendatahub-operator/v2/tests/e2e_test]
+tests/e2e/gateway_test.go:589:25: InsecureSkipVerify set to true in test file (acceptable for testing, but review carefully)
