@@ -20,23 +20,34 @@ This document explains how to replicate this process for finding new rules.
 
 ### Tool: `go-github-scraper`
 
+**Repository**: [https://github.com/jctanner/go-github-scraper](https://github.com/jctanner/go-github-scraper)
+
+A lightweight Go-based GitHub scraper that fetches all pull requests, issues, and their complete history with aggressive disk caching.
+
 ```bash
+# Install
+go install github.com/jctanner/go-github-scraper/cmd/go-github-scraper@latest
+
+# Or build from source
+git clone https://github.com/jctanner/go-github-scraper.git
 cd go-github-scraper
+go build -o bin/go-github-scraper ./cmd/go-github-scraper
 
 # Configure
 export GITHUB_TOKEN="your_token_here"
 
 # Scrape all PRs from a repository
-./go-github-scraper scrape \
+go-github-scraper scrape pulls \
   --owner opendatahub-io \
   --repo opendatahub-operator \
-  --cache-dir ~/.cache/github-scraper
+  --cache-dir .data
 
 # This fetches:
 # - All PR metadata
 # - All review comments (inline and general)
 # - All file changes with diffs
 # - PR merge/close status
+# - CI/workflow data (optional)
 ```
 
 **Output**: JSON files stored in `.data/api.github.com/repos/owner/repo/pulls/NUMBER.json`
@@ -48,6 +59,17 @@ Each PR JSON contains:
 - **Review comments**: Inline code comments with file/line context
 - **File changes**: Diffs showing what code changed
 - **Reviews**: Approval/comment/request-changes events
+- **CI/workflow data**: GitHub Actions results (optional)
+
+### Key Features of go-github-scraper
+
+Per the [repository](https://github.com/jctanner/go-github-scraper):
+
+- ✅ **Complete PR and Issue Scraping**: All data including reviews, comments, commits
+- ✅ **Efficient Disk Caching**: JSON files organized by `github.com/owner/repo`
+- ✅ **Smart Incremental Updates**: Only fetch changed items (saves API calls)
+- ✅ **Rate Limiting**: Auto-wait for GitHub's 5,000/hour limit
+- ✅ **GitHub Enterprise Support**: Configure custom API endpoints
 
 ### Why This Matters
 
@@ -56,6 +78,7 @@ Having **full PR history** allows you to:
 - Correlate comments with actual code changes
 - Identify recurring feedback themes
 - Track which reviewers catch which issues
+- Analyze debates and disagreements (where rules are born!)
 
 ---
 
@@ -294,9 +317,12 @@ Disagreement = Decision point = Lintable pattern!
 ### Step 1: Find Patterns
 
 ```bash
-# Run the scraper (if not already done)
-cd go-github-scraper
-./go-github-scraper scrape --owner ORG --repo REPO
+# Install and run the scraper (if not already done)
+# See: https://github.com/jctanner/go-github-scraper
+go install github.com/jctanner/go-github-scraper/cmd/go-github-scraper@latest
+
+export GITHUB_TOKEN="your_token"
+go-github-scraper scrape pulls --owner ORG --repo REPO --cache-dir .data
 
 # Extract comments
 cd rule-creator
@@ -350,17 +376,18 @@ make build
 
 ### Required Tools
 
-1. **go-github-scraper**: Fetch PR data
-2. **Python 3.8+**: Comment extraction
+1. **[go-github-scraper](https://github.com/jctanner/go-github-scraper)**: Fetch PR data from GitHub API
+2. **Python 3.8+**: Comment extraction and filtering
 3. **Go 1.21+**: Linter implementation
-4. **Cursor + Claude**: AI-assisted analysis
+4. **Cursor + Claude**: AI-assisted analysis and code generation
 
 ### Recommended Workflow
 
 ```bash
 # Terminal 1: Data collection
-cd go-github-scraper
-./go-github-scraper scrape --owner ORG --repo REPO
+# See: https://github.com/jctanner/go-github-scraper
+export GITHUB_TOKEN="your_token"
+go-github-scraper scrape pulls --owner ORG --repo REPO --cache-dir .data
 
 # Terminal 2: Python analysis
 cd rule-creator
@@ -450,6 +477,19 @@ This approach combines:
 - **Quality** of manual review
 
 The result: **High-value linters** that capture **real architectural decisions** from **actual code review debates**. 🎯
+
+---
+
+## Related Repositories
+
+### Core Tools
+
+- **[go-github-scraper](https://github.com/jctanner/go-github-scraper)** - GitHub PR/issue scraper with disk caching
+- **[odh-linter](https://github.com/opendatahub-io/odh-linter)** - The linter suite (this project)
+
+### Data Source
+
+- **[opendatahub-operator](https://github.com/opendatahub-io/opendatahub-operator)** - Source of PR review data
 
 ---
 
