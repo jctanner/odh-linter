@@ -1,0 +1,17 @@
+# Python dependencies for pattern discovery scripts
+#
+# These scripts help extract lintable patterns from GitHub PR review comments.
+# See README.md for usage.
+
+# No external dependencies required - scripts use only Python standard library:
+# - json (PR data parsing)
+# - re (regex for filtering)
+# - dataclasses (data models)
+# - typing (type hints)
+# - pathlib (file operations)
+
+# If you want to extend the scripts with advanced analysis:
+# numpy>=1.24.0        # For statistical analysis
+# pandas>=2.0.0        # For data manipulation
+# matplotlib>=3.7.0    # For visualization
+

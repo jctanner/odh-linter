@@ -431,13 +431,38 @@ Apache 2.0
 
 ## Contributing
 
-Contributions welcome! Please:
+### Finding New Linter Patterns
+
+Want to add a new linter? Start by analyzing PR review comments:
+
+```bash
+# 1. Install go-github-scraper
+go install github.com/jctanner/go-github-scraper/cmd/go-github-scraper@latest
+
+# 2. Scrape PR data
+export GITHUB_TOKEN="your_token"
+go-github-scraper scrape pulls --owner ORG --repo REPO --cache-dir .data
+
+# 3. Analyze comments
+cd scripts
+python filter_comments.py
+
+# 4. Use AI to identify patterns
+# Open in Cursor and ask:
+# "What patterns do you see in .data/.../pulls/XXXX.json?"
+```
+
+See [`scripts/README.md`](scripts/README.md) for detailed workflow and [`RULE_CONTRIBUTION.md`](RULE_CONTRIBUTION.md) for complete methodology.
+
+### Submitting New Linters
 
 1. Fork the repository
 2. Create a feature branch
-3. Add tests for new linters
-4. Update documentation
-5. Submit a pull request
+3. Add your linter to `linters/`
+4. Add tests and documentation
+5. Update `RULE_ID_MAPPING.md`
+6. Document provenance (which PR inspired it)
+7. Submit a pull request
 
 ## Support
 

@@ -4,6 +4,25 @@ How to extract linter rules from GitHub PR review comments using a hybrid human-
 
 ---
 
+## Project Structure
+
+```
+odh-linter/
+├── linters/           # Go code linters (12 rules)
+├── bundle-linters/    # OLM bundle linters (8 rules)
+├── scripts/           # Pattern discovery utilities (Python)
+│   ├── load_prs.py
+│   ├── filter_comments.py
+│   └── README.md
+├── cmd/               # Compiled binaries
+├── docs/              # Methodology and provenance
+└── README.md
+```
+
+**Key**: The `scripts/` directory contains Python utilities to help find new linter patterns. The linters themselves are in `linters/` and `bundle-linters/`.
+
+---
+
 ## Overview
 
 The ODH Linter rules were created through a **three-stage hybrid process**:
@@ -84,10 +103,10 @@ Having **full PR history** allows you to:
 
 ## Stage 2: Comment Extraction (Python)
 
-### Tool: `rule-creator/src/loaders/pr_loader.py`
+### Tool: `scripts/load_prs.py`
 
 ```python
-from src.loaders.pr_loader import PRLoader
+from load_prs import PRLoader
 
 # Load all PRs
 loader = PRLoader(".data")
@@ -99,10 +118,10 @@ comments = loader.extract_all_comments(prs)
 print(f"Found {len(comments)} review comments")
 ```
 
-### Tool: `rule-creator/src/processors/comment_filter.py`
+### Tool: `scripts/filter_comments.py`
 
 ```python
-from src.processors.comment_filter import CommentFilter
+from filter_comments import CommentFilter
 
 # Create filter (optionally exclude bots)
 filter = CommentFilter(exclude_bots=False)
@@ -115,6 +134,14 @@ actionable = filter.get_actionable_comments(filtered)
 
 print(f"Actionable comments: {len(actionable)}")
 ```
+
+**Quick Start**:
+```bash
+cd scripts
+python filter_comments.py
+```
+
+See [`scripts/README.md`](scripts/README.md) for detailed usage.
 
 ### What Gets Filtered
 
@@ -325,8 +352,8 @@ export GITHUB_TOKEN="your_token"
 go-github-scraper scrape pulls --owner ORG --repo REPO --cache-dir .data
 
 # Extract comments
-cd rule-creator
-python3 src/loaders/pr_loader.py
+cd scripts
+python3 filter_comments.py
 ```
 
 ### Step 2: Manual Review
@@ -390,8 +417,8 @@ export GITHUB_TOKEN="your_token"
 go-github-scraper scrape pulls --owner ORG --repo REPO --cache-dir .data
 
 # Terminal 2: Python analysis
-cd rule-creator
-python3 src/processors/comment_filter.py
+cd scripts
+python3 filter_comments.py
 
 # Terminal 3: Cursor/Claude
 cursor .
